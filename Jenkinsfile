@@ -7,6 +7,13 @@ pipeline {
     }
 
     stages {
+        stage('Check Tools') {
+            steps {
+                bat 'docker --version'
+                bat 'kubectl version --client'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -31,6 +38,20 @@ pipeline {
             }
         }
 
+        stage('Build Docker Image') {
+            steps {
+                bat "docker build -t springboot-app:latest ."
+            }
+        }
+
+        stage('Deploy to Minikube') {
+            steps {
+                bat 'kubectl apply -f k8s/deployment.yaml'
+                bat 'kubectl apply -f k8s/service.yaml'
+                bat 'kubectl rollout status deployment/springboot-app-deployment --timeout=300s'
+            }
+        }
+
         stage('Archive Artifacts') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
@@ -43,7 +64,7 @@ pipeline {
             echo 'Pipeline successfully completed!'
         }
         failure {
-            echo 'Pipeline failed  .'
+            echo 'Pipeline failed.'
         }
     }
 }
