@@ -48,7 +48,7 @@ pipeline {
 
         stage('Set Docker Env for Minikube') {
             steps {
-                bat 'gminikube.exe docker-env --shell=cmd > minikube-env.cmd'
+                bat 'C:\\minikube.exe docker-env --shell=cmd > minikube-env.cmd'
                 bat 'call minikube-env.cmd'
             }
         }
