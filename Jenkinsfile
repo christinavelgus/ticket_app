@@ -11,7 +11,7 @@ pipeline {
         stage('Check Minikube Version') {
             steps {
                 // Запуск minikube для перевірки встановлення
-                bat 'minikube.exe version'
+                bat 'minikube version'
             }
         }
 
