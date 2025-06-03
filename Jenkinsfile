@@ -45,10 +45,10 @@ pipeline {
         }
 
         stage('Deploy to Minikube') {
-            steps {
-                bat 'kubectl apply -f k8s/deployment.yaml'
-                bat 'kubectl apply -f k8s/service.yaml'
-                bat 'kubectl rollout status deployment/springboot-app-deployment --timeout=300s'
+                    steps {
+                        bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" --kubeconfig="%USERPROFILE%\\.kube\\config" apply -f k8s/deployment.yaml'
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" --kubeconfig="%USERPROFILE%\\.kube\\config" apply -f k8s/service.yaml'
+                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" --kubeconfig="%USERPROFILE%\\.kube\\config" rollout status deployment/springboot-app-deployment --timeout=300s'
             }
         }
 
