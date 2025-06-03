@@ -7,11 +7,30 @@ pipeline {
     }
 
     stages {
+        stage('Install Minikube') {
+            steps {
+                // Завантажити Minikube exe (перевір URL актуальний)
+                bat '''
+                powershell -Command "Invoke-WebRequest -Uri https://storage.googleapis.com/minikube/releases/latest/minikube-windows-amd64.exe -OutFile minikube.exe"
+                '''
+
+                // Перемістити minikube.exe в папку з PATH або у робочу директорію
+                // Для простоти — запустимо звідти, де завантажили
+                // Додатково можна додати у PATH, але це складніше
+            }
+        }
+
+        stage('Check Minikube Version') {
+            steps {
+                // Запуск minikube для перевірки встановлення
+                bat 'minikube.exe version'
+            }
+        }
+
         stage('Check Tools') {
             steps {
                 bat 'docker --version'
                 bat 'kubectl version --client'
-                bat 'minikube version'
             }
         }
 
@@ -41,8 +60,7 @@ pipeline {
 
         stage('Set Docker Env for Minikube') {
             steps {
-                // Отримаємо змінні оточення для Docker Minikube і застосуємо їх до середовища
-                bat 'minikube docker-env --shell=cmd > minikube-env.cmd'
+                bat 'minikube.exe docker-env --shell=cmd > minikube-env.cmd'
                 bat 'call minikube-env.cmd'
             }
         }
