@@ -46,16 +46,13 @@ pipeline {
             }
         }
 
-        stage('Set Docker Env for Minikube') {
-            steps {
-                bat 'C:\\minikube.exe docker-env --shell=cmd > minikube-env.cmd'
-                bat 'call minikube-env.cmd'
-            }
-        }
-
         stage('Build Docker Image in Minikube Docker') {
             steps {
-                bat 'docker build -t springboot-app:latest .'
+                bat '''
+            C:\\minikube.exe docker-env --shell=cmd > minikube-env.cmd
+            call minikube-env.cmd
+            docker build -t springboot-app:latest .
+           '''
             }
         }
 
