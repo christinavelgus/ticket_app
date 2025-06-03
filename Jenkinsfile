@@ -7,18 +7,6 @@ pipeline {
     }
 
     stages {
-        stage('Install Minikube') {
-            steps {
-                // Завантажити Minikube exe (перевір URL актуальний)
-                bat '''
-                powershell -Command "Invoke-WebRequest -Uri https://storage.googleapis.com/minikube/releases/latest/minikube-windows-amd64.exe -OutFile minikube.exe"
-                '''
-
-                // Перемістити minikube.exe в папку з PATH або у робочу директорію
-                // Для простоти — запустимо звідти, де завантажили
-                // Додатково можна додати у PATH, але це складніше
-            }
-        }
 
         stage('Check Minikube Version') {
             steps {
