@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven-3.9.6'  // або як названий Maven у Jenkins
+        maven 'Maven-3.9.6'
         jdk 'AdoptOpenJDK-17'
     }
 
@@ -15,19 +15,19 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './mvnw clean compile'
+                bat 'mvnw.cmd clean compile'
             }
         }
 
         stage('Test') {
             steps {
-                sh './mvnw test'
+                bat 'mvnw.cmd test'
             }
         }
 
         stage('Package') {
             steps {
-                sh './mvnw package -DskipTests'
+                bat 'mvnw.cmd package -DskipTests'
             }
         }
 
@@ -43,7 +43,7 @@ pipeline {
             echo 'Pipeline successfully completed!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed  .'
         }
     }
 }
