@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    image: ticket-backend
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+    networks:
+      - ticket-network
+
+  frontend:
+    image: ticket-frontend
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - ticket-network
+
+networks:
+  ticket-network:
+    driver: bridge
