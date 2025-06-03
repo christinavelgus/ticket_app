@@ -11,6 +11,7 @@ pipeline {
             steps {
                 bat 'docker --version'
                 bat 'kubectl version --client'
+                bat 'minikube version'
             }
         }
 
@@ -38,17 +39,25 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Set Docker Env for Minikube') {
             steps {
-                bat "docker build -t springboot-app:latest ."
+                // Отримаємо змінні оточення для Docker Minikube і застосуємо їх до середовища
+                bat 'minikube docker-env --shell=cmd > minikube-env.cmd'
+                bat 'call minikube-env.cmd'
+            }
+        }
+
+        stage('Build Docker Image in Minikube Docker') {
+            steps {
+                bat 'docker build -t springboot-app:latest .'
             }
         }
 
         stage('Deploy to Minikube') {
-                    steps {
-                        bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" --kubeconfig="%USERPROFILE%\\.kube\\config" apply -f k8s/deployment.yaml'
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" --kubeconfig="%USERPROFILE%\\.kube\\config" apply -f k8s/service.yaml'
-                bat '"C:\\Program Files\\Docker\\Docker\\resources\\bin\\kubectl.exe" --kubeconfig="%USERPROFILE%\\.kube\\config" rollout status deployment/springboot-app-deployment --timeout=300s'
+            steps {
+                bat 'kubectl apply -f k8s/deployment.yaml'
+                bat 'kubectl apply -f k8s/service.yaml'
+                bat 'kubectl rollout status deployment/springboot-app-deployment --timeout=300s'
             }
         }
 
