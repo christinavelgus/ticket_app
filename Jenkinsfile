@@ -11,7 +11,7 @@ pipeline {
         stage('Check Minikube Version') {
             steps {
                 // Запуск minikube для перевірки встановлення
-                bat 'minikube version'
+                bat '"C:\\minikube.exe" version'
             }
         }
 
@@ -48,7 +48,7 @@ pipeline {
 
         stage('Set Docker Env for Minikube') {
             steps {
-                bat 'minikube.exe docker-env --shell=cmd > minikube-env.cmd'
+                bat 'gminikube.exe docker-env --shell=cmd > minikube-env.cmd'
                 bat 'call minikube-env.cmd'
             }
         }
