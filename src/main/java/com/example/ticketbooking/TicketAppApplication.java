@@ -7,17 +7,17 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
-//@SpringBootApplication
-//@EnableJpaRepositories("com.example.ticketbooking.repository")
-//@EntityScan("com.example.ticketbooking.model")
-//public class TicketAppApplication {
-//    public static void main(String[] args) {
-//        SpringApplication.run(TicketAppApplication.class, args);
-//    }
-//}
 @SpringBootApplication
+@EnableJpaRepositories("com.example.ticketbooking.repository")
+@EntityScan("com.example.ticketbooking.model")
 public class TicketAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(TicketAppApplication.class, args);
     }
 }
+//@SpringBootApplication
+//public class TicketAppApplication {
+//    public static void main(String[] args) {
+//        SpringApplication.run(TicketAppApplication.class, args);
+//    }
+//}
