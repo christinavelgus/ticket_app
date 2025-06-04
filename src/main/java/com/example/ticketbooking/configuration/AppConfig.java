@@ -10,7 +10,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.sql.DataSource;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
@@ -26,6 +28,16 @@ public class AppConfig {
     @Bean
     public AuditorAware<String> auditorProvider() {
         return new com.example.ticketbooking.audit.AuditorAwareImpl();
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("org.postgresql.Driver");
+        dataSource.setUrl("jdbc:postgresql://192.168.0.189/server");
+        dataSource.setUsername("postgres");
+        dataSource.setPassword("1111");
+        return dataSource;
     }
 
     @Bean
