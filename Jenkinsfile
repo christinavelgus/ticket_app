@@ -6,12 +6,16 @@ pipeline {
         jdk 'AdoptOpenJDK-17'
     }
 
+    environment {
+        DOCKER_IMAGE_NAME = "springboot-app"
+        DOCKER_IMAGE_TAG = "latest"
+    }
+
     stages {
 
         stage('Check Minikube Version') {
             steps {
-                // Запуск minikube для перевірки встановлення
-                bat '"C:\\minikube.exe" version'
+                bat '"C:\\minikube\\minikube.exe" version'
             }
         }
 
@@ -19,12 +23,6 @@ pipeline {
             steps {
                 bat 'docker --version'
                 bat 'kubectl version --client'
-            }
-        }
-
-        stage('Checkout') {
-            steps {
-                checkout scm
             }
         }
 
@@ -49,10 +47,10 @@ pipeline {
         stage('Build Docker Image in Minikube Docker') {
             steps {
                 bat '''
-            C:\\minikube.exe docker-env --shell=cmd > minikube-env.cmd
-            call minikube-env.cmd
-            docker build -t springboot-app:latest .
-           '''
+                    C:\\minikube.exe docker-env --shell=cmd > minikube-env.cmd
+                    call minikube-env.cmd
+                    docker build -t springboot-app:latest .
+                '''
             }
         }
 

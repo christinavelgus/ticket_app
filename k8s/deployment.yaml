@@ -1,20 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: springboot-app-deployment
+  name: ticket-app-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: springboot-app
+      app: ticket-app
   template:
     metadata:
       labels:
-        app: springboot-app
+        app: ticket-app
     spec:
       containers:
-        - name: springboot-app
-          image: springboot-app:latest
-          imagePullPolicy: Never
+        - name: ticket-app
+          image: ticket-app:latest
           ports:
             - containerPort: 8081
