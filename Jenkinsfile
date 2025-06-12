@@ -25,6 +25,26 @@ pipeline {
             }
         }
 
+        stage('Set Docker Environment for Minikube') {
+            steps {
+                bat '''
+                    & minikube -p minikube docker-env | Invoke-Expression
+                '''
+            }
+        }
+
+        stage('Check Docker Status') {
+            steps {
+                bat 'docker info'
+            }
+        }
+
+        stage('Check Minikube Status') {
+            steps {
+                bat 'minikube status'
+            }
+        }
+
         stage('Build') {
             steps {
                 bat 'mvnw.cmd clean compile'
@@ -46,8 +66,6 @@ pipeline {
         stage('Build Docker Image in Minikube Docker') {
             steps {
                 bat '''
-                    C:\\minikube.exe docker-env --shell=cmd > minikube-env.cmd
-                    call minikube-env.cmd
                     docker build -t springboot-app:latest .
                 '''
             }
