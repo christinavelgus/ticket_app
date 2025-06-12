@@ -25,14 +25,14 @@ pipeline {
             }
         }
 
-        stage('Set Docker Environment for Minikube') {
+       stage('Set Docker Environment for Minikube') {
             steps {
                 bat '''
-            call minikube -p minikube docker-env | Invoke-Expression
+            minikube -p minikube docker-env > minikube-env.cmd
+            call minikube-env.cmd
         '''
     }
 }
-
 
         stage('Check Docker Status') {
             steps {
