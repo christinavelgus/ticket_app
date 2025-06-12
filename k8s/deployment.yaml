@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
         - name: ticket-app
-          image: ticket-app:latest
+          image: khrystyyyyna/ticket-app:latest
           ports:
             - containerPort: 8081

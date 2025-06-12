@@ -7,12 +7,11 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE_NAME = "springboot-app"
-        DOCKER_IMAGE_TAG = "latest"
+        DOCKER_IMAGE = 'khrystyyyyna/ticket-app:latest'
+        DOCKER_CREDENTIALS_ID = 'docker-hub-creds'
     }
 
     stages {
-
         stage('Check Minikube Version') {
             steps {
                 bat '"C:\\minikube\\minikube.exe" version'
@@ -54,6 +53,18 @@ pipeline {
             }
         }
 
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: "${DOCKER_CREDENTIALS_ID}", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    bat '''
+                        docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+                        docker tag springboot-app:latest khrystyyyyna/ticket-app:latest
+                        docker push khrystyyyyna/ticket-app:latest
+                    '''
+                }
+            }
+        }
+
         stage('Deploy to Minikube') {
             steps {
                 bat 'kubectl apply -f k8s/deployment.yaml'
@@ -65,6 +76,12 @@ pipeline {
         stage('Archive Artifacts') {
             steps {
                 archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+
+        stage('Clean Up') {
+            steps {
+                bat 'docker system prune -f'
             }
         }
     }
