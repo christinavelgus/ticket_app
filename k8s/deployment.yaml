@@ -1,3 +1,23 @@
+#apiVersion: apps/v1
+#kind: Deployment
+#metadata:
+#  name: ticket-app-deployment
+#spec:
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: ticket-app
+#  template:
+#    metadata:
+#      labels:
+#        app: ticket-app
+#    spec:
+#      containers:
+#        - name: ticket-app
+#          image: khrystyyyyna/ticket-app:latest
+#          ports:
+#            - containerPort: 8081
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,5 +35,21 @@ spec:
       containers:
         - name: ticket-app
           image: khrystyyyyna/ticket-app:latest
+          imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8081
+            - containerPort: 8081 #у богдана 8080
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:h2:mem:testdb"
+            - name: SPRING_DATASOURCE_USERNAME
+              value: "root"
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: "admin"
+            - name: SPRING_FLYWAY_ENABLED
+              value: "true"
+            - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+              value: "create-drop"
+            - name: SPRING_JPA_DATABASE_PLATFORM
+              value: "org.hibernate.dialect.H2Dialect"
+            - name: JWT_SECRET
+              value: "KgcPh88SUiCubeT5YeiyK7mIIlPCywg/+Ths1DMEHkucfyH6mFr8gwEiH/PnPmx8rdDymZkpXlEjisY+h8yLkA=="
